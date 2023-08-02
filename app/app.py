@@ -26,7 +26,7 @@ class generador():
         for _, row in data.iterrows():
             punto_propiedad={
                 'geometry' : {'type':'Point',
-                            'coordinates': (row.x,row.y)},
+                            'coordinates': (float(row.x),float(row.y))},
                 'properties': {'Name' : row.id},
             }
             shape.write(punto_propiedad)
@@ -79,6 +79,8 @@ class generador():
             
 
 class ventana_secundaria(customtkinter.CTkToplevel):
+    carpeta_raiz=os.path.dirname(__file__)
+    carpeta_img=os.path.join(carpeta_raiz,"img")
     def __init__(self):
         super().__init__()
         self.grab_set()
@@ -97,7 +99,7 @@ class ventana_secundaria(customtkinter.CTkToplevel):
         self.btn_cerrar.grid(row=index,column=0,sticky="ew",padx=60,pady=(20, 30))
     
     def icono(self,name=str):
-        self.iconoerror=customtkinter.CTkImage(Image.open("img/"+name+".png"),size=(100,100))
+        self.iconoerror=customtkinter.CTkImage(Image.open(os.path.join(App.carpeta_img,name+".png")),size=(100,100))
         self.iconoerror=customtkinter.CTkLabel(self, image = self.iconoerror,text="")
         self.iconoerror.grid(row=0,column=0,pady=(20,20),sticky="nsew")
             
@@ -173,7 +175,9 @@ class App(customtkinter.CTk):
     paso7="6. seleccione el tipo de archivo a generar"
     nombre_arch=""
     valor=-1
-    
+    carpeta_raiz=os.path.dirname(__file__)
+    carpeta_img=os.path.join(carpeta_raiz,"img")
+
     def __init__(self):
         super().__init__()
         self.title("Crear shape's - kml")
@@ -182,8 +186,8 @@ class App(customtkinter.CTk):
         self.minsize(1300,650)
         self.maxsize(1400,800)
 
-        self.iconbitmap("img/icono.ico")
-        #self.logo=PhotoImage(file="img/logo_isa.png")
+        self.iconbitmap(os.path.join(App.carpeta_img,"icono.ico"))
+        #self.logo=PhotoImage(file="logo_isa.png")
         #self.ventana.call('wm','iconphoto',self.ventana._w,self.logo)
 
         
@@ -196,7 +200,7 @@ class App(customtkinter.CTk):
         self.barralateral.grid(row=0,column=0,rowspan=4,sticky="nsew")
         self.barralateral.grid_rowconfigure(4, weight=1)
 
-        self.arriba=customtkinter.CTkImage(Image.open("img/logo_isa.png"),size=(236,125))
+        self.arriba=customtkinter.CTkImage(Image.open(os.path.join(App.carpeta_img,"logo_isa.png")),size=(236,125))
         self.logo_barra=customtkinter.CTkLabel(self.barralateral, image = self.arriba,text="")
         self.logo_barra.grid(row=0,column=0,padx=10,pady=(20,0))
         self.titulo_lat= customtkinter.CTkLabel(self.barralateral, text="Gestion predial", font=customtkinter.CTkFont(size=20, weight="bold"))
@@ -237,7 +241,7 @@ class App(customtkinter.CTk):
         self.paso3=customtkinter.CTkLabel(self.intrucc, text=App.paso3,font=customtkinter.CTkFont(size=17),anchor="w")
         self.paso3.grid(row=3,column=0,padx=60, pady=(0, 0),sticky="w")
         
-        self.ejemplo=customtkinter.CTkImage(Image.open("img/ejemplo.png"),size=(296,90))
+        self.ejemplo=customtkinter.CTkImage(Image.open(os.path.join(App.carpeta_img,"ejemplo.png")),size=(296,90))
         self.img_ejemplo=customtkinter.CTkLabel(self.intrucc, image = self.ejemplo,text="")
         self.img_ejemplo.grid(row=4,column=0,padx=80,pady=(0,0),sticky="w")
         
@@ -257,7 +261,7 @@ class App(customtkinter.CTk):
         self.titfor=customtkinter.CTkLabel(self.caja_formato,text="Generar formato",font=customtkinter.CTkFont(size=18,weight="bold"))
         self.titfor.grid(row=0,column=0, pady=35,sticky="nsew")
         
-        self.iconoxcel=customtkinter.CTkImage(Image.open("img/excel.png"),size=(83,78))
+        self.iconoxcel=customtkinter.CTkImage(Image.open(os.path.join(App.carpeta_img,"excel.png")),size=(83,78))
         self.iconoxcel=customtkinter.CTkLabel(self.caja_formato, image = self.iconoxcel,text="")
         self.iconoxcel.grid(row=1,column=0,pady=(0,10),sticky="nsew")
         
@@ -275,7 +279,7 @@ class App(customtkinter.CTk):
         #cargar archivo
         self.caja_archivo2=customtkinter.CTkFrame(self.caja_archivo)
         self.caja_archivo2.grid(row=0,column=0,sticky="nsew",padx=30,pady=30)
-        self.iconoarch=customtkinter.CTkImage(Image.open("img/archivo.png"),size=(100,100))
+        self.iconoarch=customtkinter.CTkImage(Image.open(os.path.join(App.carpeta_img,"archivo.png")),size=(100,100))
         self.iconoarch=customtkinter.CTkLabel(self.caja_archivo2, image = self.iconoarch,text="")
         self.iconoarch.grid(row=0,column=0,pady=(20,10),sticky="nsew")
         self.texto1=customtkinter.CTkLabel(self.caja_archivo2, text="Agrega el archivo\ncon las coordenadas",font=customtkinter.CTkFont(size=15,weight="bold"),anchor="w")
@@ -287,7 +291,7 @@ class App(customtkinter.CTk):
         self.caja_tipo=customtkinter.CTkFrame(self.caja_archivo)
         self.caja_tipo.grid(row=0,column=1,sticky="nsew",padx=0,pady=30)
         
-        self.label_radio_group = customtkinter.CTkLabel(master=self.caja_tipo, text="Tipo de figura:",font=customtkinter.CTkFont(weight="bold"))
+        self.label_radio_group = customtkinter.CTkLabel(master=self.caja_tipo, text="Tipo de geometría:",font=customtkinter.CTkFont(weight="bold"))
         self.label_radio_group.grid(row=0, column=2, columnspan=1, padx=30, pady=(20,10), sticky="")
         self.value=tkinter.IntVar(value=0)
         self.radio_button_1 = customtkinter.CTkRadioButton(master=self.caja_tipo, variable=self.value, value=0,text="Puntos",font=customtkinter.CTkFont(weight="bold"))
@@ -326,7 +330,7 @@ class App(customtkinter.CTk):
         #caja visual
         # self.caja_vs=customtkinter.CTkFrame(self)
         # self.caja_vs.grid(row=1,column=2,padx=(0,60),sticky="nsew")
-        # self.mapa=customtkinter.CTkImage(Image.open("img/mapa.png"),size=(200,200))
+        # self.mapa=customtkinter.CTkImage(Image.open("mapa.png"),size=(200,200))
         # self.visual_mapa=customtkinter.CTkLabel(self.caja_vs, image = self.mapa,text="",anchor="center")
         # self.visual_mapa.grid(row=0,column=0,sticky="nsew",padx=30,pady=30)
 
@@ -364,14 +368,14 @@ class App(customtkinter.CTk):
 
             else:
                 if id==1:
-                    self.imgcheck=customtkinter.CTkImage(Image.open("img/comprobado.png"),size=(30,30))
+                    self.imgcheck=customtkinter.CTkImage(Image.open(os.path.join(App.carpeta_img,"comprobado.png")),size=(30,30))
                     self.iconogen.configure(text="")
                     self.iconogen.configure(image=self.imgcheck)
                     self.tipo(tipo,data,ruta+"/shape",nombre,sis_coor[sistema])
                     self.ventana_secundaria.creado_correcto(ruta+"/shape")
                     
                 elif id==0 or id==2:
-                    self.imgcheck=customtkinter.CTkImage(Image.open("img/comprobado.png"),size=(30,30))
+                    self.imgcheck=customtkinter.CTkImage(Image.open(os.path.join(App.carpeta_img,"comprobado.png")),size=(30,30))
                     self.iconogen.configure(text="")
                     self.iconogen.configure(image=self.imgcheck)
                     self.ventana_secundaria.creado_correcto(ruta)
@@ -386,7 +390,7 @@ class App(customtkinter.CTk):
                 
         else:
             self.ventana_secundaria.error_crear()
-            self.imgcheck=customtkinter.CTkImage(Image.open("img/cancelar.png"),size=(30,30))
+            self.imgcheck=customtkinter.CTkImage(Image.open(os.path.join(App.carpeta_img,"cancelar.png")),size=(30,30))
             self.iconogen.configure(text="")
             self.iconogen.configure(image=self.imgcheck)
         
@@ -435,7 +439,7 @@ class App(customtkinter.CTk):
         
         
         if filename!="":
-            self.x=customtkinter.CTkImage(Image.open("img/image.png"),size=(100,100))
+            self.x=customtkinter.CTkImage(Image.open(os.path.join(App.carpeta_img,"image.png")),size=(100,100))
             App.nombre_arch=filename
             self.iconoarch.configure(image=self.x)
             self.texto1.configure(text=lista_a[-1])
@@ -446,7 +450,7 @@ class App(customtkinter.CTk):
             print(App.nombre_arch) 
 
         else:
-            self.x=customtkinter.CTkImage(Image.open("img/archivo.png"),size=(100,100))
+            self.x=customtkinter.CTkImage(Image.open(os.path.join(App.carpeta_img,"archivo.png")),size=(100,100))
             App.nombre_arch=filename
             self.iconoarch.configure(image=self.x)
             self.texto1.configure(text="Agrega el archivo\ncon las coordenadas")
