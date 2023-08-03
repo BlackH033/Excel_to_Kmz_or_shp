@@ -76,7 +76,16 @@ class generador():
             shp=gpd.read_file(ruta+"/"+nombre+".shp")
             gpd.io.file.fiona.drvsupport.supported_drivers['KML']='rw'
             shp.to_file(ruta+"/"+nombre+".kml",driver="KML")
-            
+
+    def crear_linea_puntos(self,ruta,ruta2,nombre):
+        kml1=open(ruta+"/linea.kml","r").readlines() 
+        kml2=open(ruta+"/puntos.kml","r").readlines() 
+        nuevo=open(ruta2+"/"+nombre+".kml","w") 
+        for i in kml1[:-1]: 
+            nuevo.write(i) 
+        for i in kml2[3:]: 
+            nuevo.write(i) 
+        nuevo.close()    
 
 class ventana_secundaria(customtkinter.CTkToplevel):
     carpeta_raiz=os.path.dirname(__file__)
@@ -209,7 +218,7 @@ class App(customtkinter.CTk):
         self.tituloapp=customtkinter.CTkLabel(self.barralateral, text="Generador de .shp - .kml",font=customtkinter.CTkFont(size=15,weight="bold"))
         self.tituloapp.grid(row=4,column=0, pady=(0, 0))
         
-        self.titulo_version= customtkinter.CTkLabel(self.barralateral, text="Version 1.0 \n\n2023", font=customtkinter.CTkFont(size=15, weight="bold"))
+        self.titulo_version= customtkinter.CTkLabel(self.barralateral, text="Version 1.0.1 \n\n2023", font=customtkinter.CTkFont(size=15, weight="bold"))
         self.titulo_version.grid(row=5, column=0, pady=(0,50))
         
         
@@ -234,24 +243,24 @@ class App(customtkinter.CTk):
         self.intrucc=customtkinter.CTkLabel(self.caja1, text="Instrucciones:",font=customtkinter.CTkFont(size=20,weight="bold"))
         self.intrucc.grid(row=0,column=0,padx=20, pady=(40, 0),sticky="w")
         
-        self.paso1=customtkinter.CTkLabel(self.intrucc, text=App.paso1,font=customtkinter.CTkFont(size=17),anchor="w")
+        self.paso1=customtkinter.CTkLabel(self.caja1, text=App.paso1,font=customtkinter.CTkFont(size=17),anchor="w")
         self.paso1.grid(row=1,column=0,padx=40, pady=(20, 0),sticky="w")
-        self.paso2=customtkinter.CTkLabel(self.intrucc, text=App.paso2,font=customtkinter.CTkFont(size=17),anchor="w")
+        self.paso2=customtkinter.CTkLabel(self.caja1, text=App.paso2,font=customtkinter.CTkFont(size=17),anchor="w")
         self.paso2.grid(row=2,column=0,padx=40, pady=(0, 0),sticky="w")
-        self.paso3=customtkinter.CTkLabel(self.intrucc, text=App.paso3,font=customtkinter.CTkFont(size=17),anchor="w")
+        self.paso3=customtkinter.CTkLabel(self.caja1, text=App.paso3,font=customtkinter.CTkFont(size=17),anchor="w")
         self.paso3.grid(row=3,column=0,padx=60, pady=(0, 0),sticky="w")
         
         self.ejemplo=customtkinter.CTkImage(Image.open(os.path.join(App.carpeta_img,"ejemplo.png")),size=(296,90))
-        self.img_ejemplo=customtkinter.CTkLabel(self.intrucc, image = self.ejemplo,text="")
+        self.img_ejemplo=customtkinter.CTkLabel(self.caja1, image = self.ejemplo,text="")
         self.img_ejemplo.grid(row=4,column=0,padx=80,pady=(0,0),sticky="w")
         
-        self.paso4=customtkinter.CTkLabel(self.intrucc, text=App.paso4,font=customtkinter.CTkFont(size=17),anchor="w")
+        self.paso4=customtkinter.CTkLabel(self.caja1, text=App.paso4,font=customtkinter.CTkFont(size=17),anchor="w")
         self.paso4.grid(row=5,column=0,padx=40, pady=(0, 0),sticky="w")
-        self.paso5=customtkinter.CTkLabel(self.intrucc, text=App.paso5,font=customtkinter.CTkFont(size=17),anchor="w")
+        self.paso5=customtkinter.CTkLabel(self.caja1, text=App.paso5,font=customtkinter.CTkFont(size=17),anchor="w")
         self.paso5.grid(row=6,column=0,padx=40, pady=(0, 0),sticky="w")
-        self.paso6=customtkinter.CTkLabel(self.intrucc, text=App.paso6,font=customtkinter.CTkFont(size=17),anchor="w")
+        self.paso6=customtkinter.CTkLabel(self.caja1, text=App.paso6,font=customtkinter.CTkFont(size=17),anchor="w")
         self.paso6.grid(row=7,column=0,padx=40, pady=(0, 0),sticky="w")
-        self.paso7=customtkinter.CTkLabel(self.intrucc, text=App.paso7,font=customtkinter.CTkFont(size=17),anchor="w")
+        self.paso7=customtkinter.CTkLabel(self.caja1, text=App.paso7,font=customtkinter.CTkFont(size=17),anchor="w")
         self.paso7.grid(row=8,column=0,padx=40, pady=(0, 0),sticky="w")
         
         #descargar formato
@@ -266,7 +275,7 @@ class App(customtkinter.CTk):
         self.iconoxcel.grid(row=1,column=0,pady=(0,10),sticky="nsew")
         
         self.texto1=customtkinter.CTkLabel(self.caja_formato, text="Click en el botón para indicar la\ncarpeta donde se guardará el formato",font=customtkinter.CTkFont(size=15),anchor="w")
-        self.texto1.grid(row=2,column=0, padx=10,pady=(0, 10))
+        self.texto1.grid(row=2,column=0, padx=10,pady=(0, 30))
         
         self.generar_formato=customtkinter.CTkButton(self.caja_formato, text="Generar",command=self.generar_archivo,font=customtkinter.CTkFont(weight="bold"))
         self.generar_formato.grid(row=3,column=0,padx=25,sticky="nsew")
@@ -281,41 +290,43 @@ class App(customtkinter.CTk):
         self.caja_archivo2.grid(row=0,column=0,sticky="nsew",padx=30,pady=30)
         self.iconoarch=customtkinter.CTkImage(Image.open(os.path.join(App.carpeta_img,"archivo.png")),size=(100,100))
         self.iconoarch=customtkinter.CTkLabel(self.caja_archivo2, image = self.iconoarch,text="")
-        self.iconoarch.grid(row=0,column=0,pady=(20,10),sticky="nsew")
+        self.iconoarch.grid(row=0,column=0,pady=(30,10),sticky="nsew",padx=2)
         self.texto1=customtkinter.CTkLabel(self.caja_archivo2, text="Agrega el archivo\ncon las coordenadas",font=customtkinter.CTkFont(size=15,weight="bold"),anchor="w")
-        self.texto1.grid(row=1,column=0, padx=10,pady=(0, 10),sticky="nsew")
+        self.texto1.grid(row=1,column=0, padx=10,pady=(10, 20),sticky="nsew")
         self.boton_carga=customtkinter.CTkButton(self.caja_archivo2,command=self.abrir_archivo,text="ABRIR",font=customtkinter.CTkFont(weight="bold"))
-        self.boton_carga.grid(row=2,column=0,sticky="nsew")
-        
+        self.boton_carga.grid(row=3,column=0,sticky="nsew",rowspan=2)
+      
         #tipo
         self.caja_tipo=customtkinter.CTkFrame(self.caja_archivo)
         self.caja_tipo.grid(row=0,column=1,sticky="nsew",padx=0,pady=30)
         
         self.label_radio_group = customtkinter.CTkLabel(master=self.caja_tipo, text="Tipo de geometría:",font=customtkinter.CTkFont(weight="bold"))
-        self.label_radio_group.grid(row=0, column=2, columnspan=1, padx=30, pady=(20,10), sticky="")
+        self.label_radio_group.grid(row=0, column=2, columnspan=1, padx=30, pady=(20,10), sticky="nsew")
         self.value=tkinter.IntVar(value=0)
-        self.radio_button_1 = customtkinter.CTkRadioButton(master=self.caja_tipo, variable=self.value, value=0,text="Puntos",font=customtkinter.CTkFont(weight="bold"))
-        self.radio_button_1.grid(row=1, column=2, pady=(0,10), padx=10, sticky="n")
-        self.radio_button_2 = customtkinter.CTkRadioButton(master=self.caja_tipo, variable=self.value, value=1,text="Líneas",font=customtkinter.CTkFont(weight="bold"))
-        self.radio_button_2.grid(row=2, column=2, pady=10, padx=10, sticky="n")
-        self.radio_button_3 = customtkinter.CTkRadioButton(master=self.caja_tipo, variable=self.value, value=2,text="Polígono",font=customtkinter.CTkFont(weight="bold"))
-        self.radio_button_3.grid(row=3, column=2, pady=10, padx=10, sticky="n")
+        self.radio_button_1 = customtkinter.CTkRadioButton(master=self.caja_tipo, variable=self.value, value=0,text="Puntos",font=customtkinter.CTkFont(weight="bold"),command=self.desbloqueo)
+        self.radio_button_1.grid(row=1, column=2, pady=(0,10),padx=20,  sticky="nsew")
+        self.radio_button_2 = customtkinter.CTkRadioButton(master=self.caja_tipo, variable=self.value, value=1,text="Líneas",font=customtkinter.CTkFont(weight="bold"),command=self.desbloqueo)
+        self.radio_button_2.grid(row=2, column=2, pady=10,padx=20,  sticky="nsew")
+        self.radio_button_3 = customtkinter.CTkRadioButton(master=self.caja_tipo, variable=self.value, value=2,text="Polígono",font=customtkinter.CTkFont(weight="bold"),command=self.desbloqueo)
+        self.radio_button_3.grid(row=3, column=2, pady=10,padx=20,  sticky="nsew")
+        self.radio_button_22 = customtkinter.CTkRadioButton(master=self.caja_tipo, variable=self.value, value=3,text="Línea + puntos",font=customtkinter.CTkFont(weight="bold"),command=self.bloqueo)
+        self.radio_button_22.grid(row=4, column=2, pady=(10,20),padx=20, sticky="nsew")
 
         #sistema de coordenadas
         self.caja_opciones=customtkinter.CTkFrame(self.caja_archivo)
         self.caja_opciones.grid(row=0,column=3,sticky="nsew",pady=30,padx=(30,0))
         self.text_sis=customtkinter.CTkLabel(self.caja_opciones,text="Sistema de\ncoordenadas",font=customtkinter.CTkFont(weight="bold"))
-        self.text_sis.grid(row=0,column=0,pady=(20,10),padx=30)
+        self.text_sis.grid(row=0,column=0,pady=(30,10),padx=30)
         self.sistema=tkinter.StringVar(value="Origen nacional")
         self.optionmenu_1 = customtkinter.CTkOptionMenu(self.caja_opciones, dynamic_resizing=False,values=["Origen nacional", "WGS84"],variable=self.sistema)
-        self.optionmenu_1.grid(row=1, column=0,padx=5)
+        self.optionmenu_1.grid(row=1, column=0,padx=20)
         self.text_nombre=customtkinter.CTkLabel(self.caja_opciones,text="Nombre de\nla figura",font=customtkinter.CTkFont(weight="bold"))
-        self.text_nombre.grid(row=3,column=0,pady=(20,10))
+        self.text_nombre.grid(row=3,column=0,pady=(30,10))
         self.text_input=customtkinter.CTkEntry(self.caja_opciones, placeholder_text="figura")
         self.text_input.grid(row=4, column=0, columnspan=2, padx=5, sticky="nsew")
 
         #generar figura
-        self.caja_generar=customtkinter.CTkFrame(self.caja_archivo)
+        self.caja_generar=customtkinter.CTkFrame(self.caja_archivo,fg_color="transparent")
         self.caja_generar.grid(row=0,column=4,sticky="nsew",padx=30,pady=30)
         self.iconogen=customtkinter.CTkLabel(self.caja_generar, text="",font=customtkinter.CTkFont(weight="bold"))
         self.iconogen.grid(row=0,column=0,sticky="nsew",pady=10)
@@ -359,7 +370,7 @@ class App(customtkinter.CTk):
             lista_arch=lista_dir
             if "shape" not in lista_dir and id!=0:os.mkdir(ruta+"/shape")
                 
-            if id!=0:lista_arch=os.listdir(ruta+"/shape")
+            if id!=0 and id!=3:lista_arch=os.listdir(ruta+"/shape")
             
             if (nombre+".shp" in lista_arch or nombre+".kml" in lista_arch) and id!=0:
                     self.ventana_secundaria.archivo_existe(ruta+"/shape",nombre)
@@ -367,27 +378,38 @@ class App(customtkinter.CTk):
                 self.ventana_secundaria.archivo_existe(ruta,nombre)
 
             else:
-                if id==1:
-                    self.imgcheck=customtkinter.CTkImage(Image.open(os.path.join(App.carpeta_img,"comprobado.png")),size=(30,30))
-                    self.iconogen.configure(text="")
-                    self.iconogen.configure(image=self.imgcheck)
-                    self.tipo(tipo,data,ruta+"/shape",nombre,sis_coor[sistema])
-                    self.ventana_secundaria.creado_correcto(ruta+"/shape")
-                    
-                elif id==0 or id==2:
-                    self.imgcheck=customtkinter.CTkImage(Image.open(os.path.join(App.carpeta_img,"comprobado.png")),size=(30,30))
-                    self.iconogen.configure(text="")
-                    self.iconogen.configure(image=self.imgcheck)
+                if tipo==3:
+                    print("tipo 3")
+                    os.makedirs(ruta+"/00000000carpetamomentanea")
+                    self.tipo(0,data,ruta+"/00000000carpetamomentanea","puntos",sis_coor[sistema])
+                    self.tipo(1,data,ruta+"/00000000carpetamomentanea","linea",sis_coor[sistema])
+                    self.generador.crear_KML(ruta+"/00000000carpetamomentanea",2,"puntos")
+                    self.generador.crear_KML(ruta+"/00000000carpetamomentanea",2,"linea")
+                    self.generador.crear_linea_puntos(ruta+"/00000000carpetamomentanea",ruta,nombre)
+                    shutil.rmtree(ruta+"/00000000carpetamomentanea")       
                     self.ventana_secundaria.creado_correcto(ruta)
-                    if id==2:
+
+                else:
+                    if id==1:
+                        self.imgcheck=customtkinter.CTkImage(Image.open(os.path.join(App.carpeta_img,"comprobado.png")),size=(30,30))
+                        self.iconogen.configure(text="")
+                        self.iconogen.configure(image=self.imgcheck)
                         self.tipo(tipo,data,ruta+"/shape",nombre,sis_coor[sistema])
-                        self.generador.crear_KML(ruta+"/shape",2,nombre)
-                    else:
-                        os.makedirs(ruta+"/00000000carpetamomentanea")
-                        self.tipo(tipo,data,ruta+"/00000000carpetamomentanea",nombre,sis_coor[sistema])
-                        self.generador.crear_KML(ruta+"/00000000carpetamomentanea",0,nombre)
-                        shutil.rmtree(ruta+"/00000000carpetamomentanea")
-                
+                        self.ventana_secundaria.creado_correcto(ruta+"/shape")
+                        
+                    elif id==0 or id==2:
+                        self.imgcheck=customtkinter.CTkImage(Image.open(os.path.join(App.carpeta_img,"comprobado.png")),size=(30,30))
+                        self.iconogen.configure(text="")
+                        self.iconogen.configure(image=self.imgcheck)
+                        self.ventana_secundaria.creado_correcto(ruta)
+                        if id==2:
+                            self.tipo(tipo,data,ruta+"/shape",nombre,sis_coor[sistema])
+                            self.generador.crear_KML(ruta+"/shape",2,nombre)
+                        else:
+                            os.makedirs(ruta+"/00000000carpetamomentanea")
+                            self.tipo(tipo,data,ruta+"/00000000carpetamomentanea",nombre,sis_coor[sistema])
+                            self.generador.crear_KML(ruta+"/00000000carpetamomentanea",0,nombre)
+                            shutil.rmtree(ruta+"/00000000carpetamomentanea")                                     
         else:
             self.ventana_secundaria.error_crear()
             self.imgcheck=customtkinter.CTkImage(Image.open(os.path.join(App.carpeta_img,"cancelar.png")),size=(30,30))
@@ -458,7 +480,16 @@ class App(customtkinter.CTk):
             self.texto1.configure(text_color="white")
             self.ventana_error=ventana_secundaria()
             self.ventana_error.error_seleccion()
-        
+    
+    def bloqueo(self):
+        self.btn_shp.configure(state="disabled")
+        self.btn_ambos.configure(state="disabled")
+    
+    
+    def desbloqueo(self):
+        self.btn_shp.configure(state="normal")
+        self.btn_ambos.configure(state="normal")
+
     def apparence(self, new_appearance_mode: str):
         customtkinter.set_appearance_mode(new_appearance_mode)
 
