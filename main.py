@@ -18,6 +18,8 @@ customtkinter.set_default_color_theme("blue")  #establece el color de la app en 
 
 class App(customtkinter.CTk):
     """
+    Clase encargada de la ventana principal y la interacción con los botones.
+    al ser invocada inicia con customtkinter.CTK -> generando la ventana principal.
     """
 
     ruta_arch=""
@@ -29,24 +31,20 @@ class App(customtkinter.CTk):
     paso6="5. seleccione el sistema de coordenadas"
     paso7="6. seleccione el tipo de archivo a generar"
     nombre_arch=""
-    carpeta_raiz=os.path.dirname(__file__)
-    carpeta_img=os.path.join(carpeta_raiz,"img")
+    carpeta_raiz=os.path.dirname(__file__)          #guarda la ruta donde se encuentra este archivo .py
+    carpeta_img=os.path.join(carpeta_raiz,"img")    #crea la ruta relativa a la carpeta /img - la cual se guarda en la misma ruta del archivo .py
 
     def __init__(self):
         super().__init__()
-        self.title("Crear shape's - kml")
-        self.geometry(f"{1366}x{730}")
-        self.state("zoomed")
-        self.minsize(1300,650)
-        self.maxsize(1400,800)
-
-        self.iconbitmap(os.path.join(App.carpeta_img,"icono.ico"))
-        #self.logo=PhotoImage(file="logo_isa.png")
-        #self.ventana.call('wm','iconphoto',self.ventana._w,self.logo)
-
+        self.title("Crear shape's - kml")                                   #titulo de la ventana
+        self.geometry(f"{1366}x{730}")                                      #tamaño de la ventana
+        self.minsize(1300,650)                                              #tamaño minimo posible                     
+        self.maxsize(1400,800)                                              #tamaño maximo posible
+        self.state("zoomed")                                                #pantalla grande  
+        self.iconbitmap(os.path.join(App.carpeta_img,"icono.ico"))          #establece el icono de la app
         
         self.grid_columnconfigure(1, weight=1)
-        self.grid_columnconfigure((2, 3), weight=0)
+        self.grid_columnconfigure((2), weight=0)
         self.grid_rowconfigure((0, 1, 2), weight=1)
 
         #barra lateral
