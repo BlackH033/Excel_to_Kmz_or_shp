@@ -76,7 +76,12 @@ Se requieren de las siguientes librerias:
  </a>
 </div>
 <br>
-
+<div>
+ <a href="https://pypi.org/project/tkintermapview/" target="_blank">
+  <img height=20 src="https://user-images.githubusercontent.com/95384317/258621438-3a0b7882-76d1-4d87-8bb2-5b97a9d54833.png"/>
+  &nbsp;tkintermapview
+ </a>
+</div>
 
 # &nbsp;<img height=25 src="https://github.com/BlackH033/Excel_to_Kmz_or_shp/assets/95384317/cfef4e2b-2b84-497d-86f6-f60c142ecfc0"/> &nbsp;Configuración 
 
@@ -107,10 +112,10 @@ Se requieren de las siguientes librerias:
  *Nota: la app fue creada haciendo uso de auto-py-to-exe que usa pyinstaller para generar el .exe apartir del script* -> <a href="https://pypi.org/project/auto-py-to-exe/" target="_blank"><img height=20 src="https://user-images.githubusercontent.com/95384317/258621438-3a0b7882-76d1-4d87-8bb2-5b97a9d54833.png"/></a>&nbsp;[auto-py-to-exe](https://pypi.org/project/auto-py-to-exe/)
 
 <!-- 
-https://drive.google.com/uc?export=download&id=1070Pa-USKcJo6VnQICfQ5syjCgXGsQaL&name=Appv103.exe
+https://drive.google.com/uc?export=download&id=1WKARqlBHipikzmuTdzZL8XdTM4a_SZVi&name=Appv103.exe
 -->
 <div align="center">
-  <a href="" target="_blank">
+  <a href="https://drive.google.com/uc?export=download&id=1WKARqlBHipikzmuTdzZL8XdTM4a_SZVi&name=Appv103.exe" target="_blank">
     <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/95384317/258607286-138a1990-c8d4-4543-9ead-0f7a29fd347a.png" width="300">
   </a>
 </div>
