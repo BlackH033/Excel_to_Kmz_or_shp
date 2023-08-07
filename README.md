@@ -29,19 +29,51 @@ Con esta app se pueden generar archivos .kml y/o .shp a partir de un archivo Exc
 
 # ⚠️ Requerimientos
 Se requieren de las siguientes librerias:
-<br><br>
-&emsp;<a href="https://pypi.org/project/customtkinter/" target="_blank"><img height=20 src="https://user-images.githubusercontent.com/95384317/258621438-3a0b7882-76d1-4d87-8bb2-5b97a9d54833.png"/></a>&nbsp;[customtkinter](https://pypi.org/project/customtkinter/)
-<br><br>
-&emsp;<a href="https://pypi.org/project/Fiona/" target="_blank"><img height=20 src="https://user-images.githubusercontent.com/95384317/258621438-3a0b7882-76d1-4d87-8bb2-5b97a9d54833.png"/></a>&nbsp;[Fiona](https://pypi.org/project/Fiona/)
-<br><br>
-&emsp;<a href="https://pypi.org/project/geopandas/" target="_blank"><img height=20 src="https://user-images.githubusercontent.com/95384317/258621438-3a0b7882-76d1-4d87-8bb2-5b97a9d54833.png"/></a>&nbsp;[geopandas](https://pypi.org/project/geopandas/)
-<br><br>
-&emsp;<a href="https://pypi.org/project/pandas/" target="_blank"><img height=20 src="https://user-images.githubusercontent.com/95384317/258621438-3a0b7882-76d1-4d87-8bb2-5b97a9d54833.png"/></a>&nbsp;[pandas](https://pypi.org/project/pandas/)
-<br><br>
-&emsp;<a href="https://pypi.org/project/Pillow/" target="_blank"><img height=20 src="https://user-images.githubusercontent.com/95384317/258621438-3a0b7882-76d1-4d87-8bb2-5b97a9d54833.png"/></a>&nbsp;[Pillow](https://pypi.org/project/Pillow/)
-<br><br>
-&emsp;<a href="https://pypi.org/project/openpyxl/" target="_blank"><img height=20 src="https://user-images.githubusercontent.com/95384317/258621438-3a0b7882-76d1-4d87-8bb2-5b97a9d54833.png"/></a>&nbsp;[openpyxl](https://pypi.org/project/openpyxl/)
-<br><br>
+<br>
+
+<div>
+ <a href="https://pypi.org/project/customtkinter/" target="_blank">
+  <img height=20 src="https://user-images.githubusercontent.com/95384317/258621438-3a0b7882-76d1-4d87-8bb2-5b97a9d54833.png"/>
+  &nbsp;customtkinter
+ </a>
+</div>
+<br>
+<div>
+ <a href="https://pypi.org/project/Fiona/" target="_blank">
+  <img height=20 src="https://user-images.githubusercontent.com/95384317/258621438-3a0b7882-76d1-4d87-8bb2-5b97a9d54833.png"/>
+  &nbsp;Fiona
+ </a>
+</div>
+<br>
+<div>
+ <a href="https://pypi.org/project/geopandas/" target="_blank">
+  <img height=20 src="https://user-images.githubusercontent.com/95384317/258621438-3a0b7882-76d1-4d87-8bb2-5b97a9d54833.png"/>
+  &nbsp;geopandas
+ </a>
+</div>
+<br>
+<div>
+ <a href="https://pypi.org/project/pandas/" target="_blank">
+  <img height=20 src="https://user-images.githubusercontent.com/95384317/258621438-3a0b7882-76d1-4d87-8bb2-5b97a9d54833.png"/>
+  &nbsp;pandas
+ </a>
+</div>
+<br>
+<div>
+ <a href="https://pypi.org/project/Pillow/" target="_blank">
+  <img height=20 src="https://user-images.githubusercontent.com/95384317/258621438-3a0b7882-76d1-4d87-8bb2-5b97a9d54833.png"/>
+  &nbsp;Pillow
+ </a>
+</div>
+<br>
+<div>
+ <a href="https://pypi.org/project/openpyxl/" target="_blank">
+  <img height=20 src="https://user-images.githubusercontent.com/95384317/258621438-3a0b7882-76d1-4d87-8bb2-5b97a9d54833.png"/>
+  &nbsp;openpyxl
+ </a>
+</div>
+<br>
+
 
 # &nbsp;<img height=25 src="https://github.com/BlackH033/Excel_to_Kmz_or_shp/assets/95384317/cfef4e2b-2b84-497d-86f6-f60c142ecfc0"/> &nbsp;Configuración 
 
