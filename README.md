@@ -88,7 +88,7 @@ Se requieren de las siguientes librerias:
         1. Puedes instalar cada libreria -> `pip install nombrelibreria`
         2. O puedes usar el archivo *requirements.txt* -> `pip install -r requirements.txt` (esta opción es la recomendada)
  5. Reinicia el IDE
- 6. Corre el script *main.py* desde el IDE o desde la terminal usando `./main.py` 
+ 6. Corre el script *main.py* desde el IDE o desde la terminal usando `./app.py` 
 
 ---
 
