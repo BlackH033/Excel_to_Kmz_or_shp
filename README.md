@@ -4,7 +4,7 @@ Creado por: Victor Daniel Rios Florez
 ![Generador de  kml o  shp](https://github.com/BlackH033/Excel_to_Kmz_or_shp/assets/95384317/416041f3-5225-4249-8ab6-9a4849749688)
 <div align="center">
   <h3>
-    Versión 1.0.0
+    Versión 1.1.0
   </h3>
 </div>
 
@@ -27,6 +27,8 @@ Con esta app se pueden generar archivos .kml y/o .shp a partir de un archivo Exc
 - [x] Puede generar la información final en .kml
 - [x] Puede generar la información final en .shp
 - [x] Puede generar la información final en .kml y .shp a la vez (en un solo proceso)
+### V1.1.0
+- [x] En la ventana secundaria se muestra la geometria en mapa - Google Satelite
 
 # ⚠️ Requerimientos
 Se requieren de las siguientes librerias:
