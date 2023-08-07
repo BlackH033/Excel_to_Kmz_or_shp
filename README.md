@@ -9,7 +9,7 @@ Creado por: Victor Daniel Rios Florez
 </div>
 
 ---
-![1 0](https://github.com/BlackH033/Excel_to_Kmz_or_shp/assets/95384317/b49e078c-77a2-402c-a62f-3021fdf6a66a)
+![1 1](https://github.com/BlackH033/Excel_to_Kmz_or_shp/assets/95384317/09de5722-d2db-4b2d-a093-4d2c85a49bff)
 
 ---
 Con esta app se pueden generar archivos .kml y/o .shp a partir de un archivo Excel (.xlsx o .csv). El archivo Excel debe de contner el id y las coordenadas del punto o vertice. La app puede generar las diferentes geometrias según la elección del usuario.
