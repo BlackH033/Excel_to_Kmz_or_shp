@@ -228,10 +228,10 @@ class App(customtkinter.CTk):
             if len(ruta)>1:
                 ruta.pop(-1)
             ruta="/".join(ruta)
-
+            data2=data.copy()  
             if geometria==3:
                 self.generador.crear_linea_puntos(data,ruta,nombre,sis_coor[sistema])    
-                self.ventana_secundaria.creado_correcto(ruta,data,sistema,geometria)
+                self.ventana_secundaria.creado_correcto(ruta,data2,sistema,geometria)
 
             else:
                 if id==1:
@@ -239,13 +239,13 @@ class App(customtkinter.CTk):
                     self.iconogen.configure(text="")
                     self.iconogen.configure(image=self.imgcheck)
                     self.generar_geometria(geometria,data,ruta+"/shape",nombre,sis_coor[sistema])
-                    self.ventana_secundaria.creado_correcto(ruta+"/shape",data,sistema,geometria)
+                    self.ventana_secundaria.creado_correcto(ruta+"/shape",data2,sistema,geometria)
                     
                 elif id==0 or id==2:
                     self.imgcheck=customtkinter.CTkImage(Image.open(os.path.join(App.carpeta_img,"comprobado.png")),size=(30,30))
                     self.iconogen.configure(text="")
                     self.iconogen.configure(image=self.imgcheck)
-                    self.ventana_secundaria.creado_correcto(ruta,data,sistema,geometria)
+                    self.ventana_secundaria.creado_correcto(ruta,data2,sistema,geometria)
                     if id==2:
                         self.generar_geometria(geometria,data,ruta+"/shape",nombre,sis_coor[sistema])
                         self.generador.crear_KML(ruta+"/shape",1,nombre)
