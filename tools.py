@@ -30,11 +30,11 @@ class generador():
         """
 
         """
-        esquema que llevará el shape, geometria de tipo punto y de propiedades un campo str llamado "Name"
+        esquema que llevará el shape, geometria de tipo punto y de propiedades un campo str llamado "id"
         """
         esquema={
             "geometry":"Point",
-            "properties":[("Name","str")]                
+            "properties":[("id","str")]                
             }
         """
         fiona.open abre archivos, en este caso .shp
@@ -65,7 +65,7 @@ class generador():
             - el tipo de geometria ("type":"Point")
             - las coordenadas indicando coordenada X y coordenada Y ("coordinates": (row.x,row.y))
                 como row es el objeto que almacena la información se extrae la información de "x" y "y" 
-        además se agrega en el esquema la propiedad "Name" y su valor ("properties:{"Name":row.id})
+        además se agrega en el esquema la propiedad "id" y su valor ("properties:{"id":row.id})
         
         se usa .write para agregar el esquema al shape (shape.write(punto_esquema)  -> así en el shape se guarda cada punto)
         al finalizar el for se cierra el shape y ya queda el shape creado con todos los puntos que trae el DataFrame
@@ -74,7 +74,7 @@ class generador():
             punto_esquema={                                                
                 "geometry" : {"type":"Point",                               
                             "coordinates": (row.x,row.y)},                   
-                "properties": {"Name" : row.id},
+                "properties": {"id" : row.id},
             }
             shape.write(punto_esquema)
         shape.close()
@@ -93,11 +93,11 @@ class generador():
         """
 
         """
-        esquema que llevará el shape, geometria de tipo linea y de propiedades un campo str llamado "Name"
+        esquema que llevará el shape, geometria de tipo linea y de propiedades un campo str llamado "id"
         """
         esquema={
             "geometry":"LineString",
-            "properties":[("Name","str")]
+            "properties":[("id","str")]
             }
         """
         fiona.open abre archivos, en este caso .shp
@@ -136,7 +136,7 @@ class generador():
         se crea el esquema de la linea indicando la geometria, la cual tiene:
             - el tipo de geomtria, que en este caso es linea ("type":"LineString")
             - las coordenadas, que están almacenadas en la lista "lista_puntos" ("coordinates": lista_puntos)
-        además se agrega en el esquema la propiedad "Name" y su valor ("properties:{"Name":nombre})
+        además se agrega en el esquema la propiedad "id" y su valor ("properties:{"id":nombre})
 
         se usa .write para agregar el esquema al shape (shape.write(linea_esquema)
         se cierra el shape y ya queda el shape de linea creado con todos los puntos que trae el DataFrame
@@ -144,30 +144,31 @@ class generador():
         linea_esquema = {
         "geometry" : {"type":"LineString",
                         "coordinates": lista_puntos},
-        "properties": {"Name" : nombre}, 
+        "properties": {"id" : nombre}, 
         }                                           
         shape.write(linea_esquema)
         shape.close()
 
     # ---------- Metodo para generar Shapefile de tipo poligono -----------
-    def poligono(self,data,ruta,nombre,sis_coor):
+    def poligono(self,data,ruta,nombre,sis_coor,opc):
         """
-        recibe 4 parametros: 
+        recibe 5 parametros: 
             1. data     -> DataFrame con la información de las coordenadas
                            el DataFrame lo crea pandas cuando se abre el archivo Excel
             2. ruta     -> La ruta donde se guardaran los archivos
             3. nombre   -> nombre que el usuario desea que lleve los archivos
             4. sis_coor -> el sistema de coordenadas en el cual están las coordenadas
+            5. opc      -> True o False para indicar si es multipoligono o no
 
         genera el shape de tipo poligono (genera 5 archivos .shp,.cpg,.dbf,.prj,.shx) en la ruta especificada.
         """
 
         """
-        esquema que llevará el shape, geometria de tipo poligono y de propiedades un campo str llamado "Name"
+        esquema que llevará el shape, geometria de tipo poligono y de propiedades un campo str llamado "id"
         """
         esquema = {
         "geometry":"Polygon",
-        "properties":[("Name","str")]
+        "properties":[("id","str")]
         }
         """
         fiona.open abre archivos, en este caso .shp
@@ -188,28 +189,65 @@ class generador():
             schema = esquema, 
             crs = sis_coor)
         """
-        se creea una lista vacía donde se almacenarán las coordenadas de cada vertice que conforma el poligono.
-        se usa un for para recorrer la información que genera data.iterrows().
-        data.iterrows() -> devuelve un iterador del DataFrame "data" con dos objetos: un objeto con 
-                           indices y un objeto con la informacion.
-        "_" toma como valor cada objeto indice (esta información no se usa)
-        "row" toma el valor del objeto con la información
+        si opc tiene el valor de True:
+            se genera una lista de un set que toma la columna id del DataFrame (se generan id sin repeticiones)
+            se usa un for para recorrer la lista con los id unicos (i toma el valor de cada id - cada valor representa un poligono diferente)
+            por cada valor de i (osea por cada poligono):
+                se creea una lista vacía donde se almacenarán las coordenadas de cada vertice que conforma el poligono.
+                se usa un for para recorrer la información que genera data.iterrows().
+                data.iterrows() -> devuelve un iterador del DataFrame "data" con dos objetos: un objeto con 
+                                indices y un objeto con la informacion.
+                "_" toma como valor cada objeto indice (esta información no se usa)
+                "row" toma el valor del objeto con la información
+                si el id de la fila es igual al valor de i quiere decir que está en los vertices pertenecientes al poligono i
+                se guarda en la lista una tupla que contiene la coordenada "x" y "y" de cada vertice (lista_vertice.append((row.x,row.y)))
+                luego de que finalice el for, en lista_vertice se encuentran todas las coordendas de los vertices del poligono i
 
-        por cada iteración se guarda en la lista una tupla que contiene la coordenada "x" y "y" 
-        de cada vertice (lista_vertice.append((row.x,row.y)))
-        como row es el objeto que almacena la información se extrae la información de "x" y "y"
+                luego se agrega el nombre y las coordenadas al esquema del shape perteneciente al poligono i (sh_propiedad)
+                se agrega el esquema a al shape (shape.write())
+
+
+        en caso de que opc tenga otro valor diferente a True:
+            se creea una lista vacía donde se almacenarán las coordenadas de cada vertice que conforma el poligono.
+            se usa un for para recorrer la información que genera data.iterrows().
+            data.iterrows() -> devuelve un iterador del DataFrame "data" con dos objetos: un objeto con 
+                            indices y un objeto con la informacion.
+            "_" toma como valor cada objeto indice (esta información no se usa)
+            "row" toma el valor del objeto con la información
+
+            por cada iteración se guarda en la lista una tupla que contiene la coordenada "x" y "y" 
+            de cada vertice (lista_vertice.append((row.x,row.y)))
+            como row es el objeto que almacena la información se extrae la información de "x" y "y"
         """
-        lista_vertice = []
-        for _, row in data.iterrows():
-            lista_vertice.append((float(row.x),float(row.y)))
-        lista_vertice.append(lista_vertice[0])
-        shp_propiedad = {
-        "geometry" : {"type":"Polygon",
-                        "coordinates": [lista_vertice]},
-        "properties": {"Name" : nombre},
-        }                                       
-        shape.write(shp_propiedad)
-        shape.close()
+        if opc==3:
+            lista_id=list(set(data.id))
+            for i in lista_id:
+                lista_vertice = []
+                for _, row in data.iterrows():
+                    if row.id==i:
+                        lista_vertice.append((float(row.x),float(row.y)))
+                if lista_vertice[0]!=lista_vertice[-1]:
+                    lista_vertice.append(lista_vertice[0])
+                shp_propiedad = {
+                "geometry" : {"type":"Polygon",
+                                "coordinates": [lista_vertice]},
+                "properties": {"id" : i},
+                }                                       
+                shape.write(shp_propiedad)
+            shape.close()
+        else:
+            lista_vertice = []
+            for _, row in data.iterrows():
+                lista_vertice.append((float(row.x),float(row.y)))
+            if lista_vertice[0]!=lista_vertice[-1]:
+                    lista_vertice.append(lista_vertice[0])
+            shp_propiedad = {
+            "geometry" : {"type":"Polygon",
+                            "coordinates": [lista_vertice]},
+            "properties": {"id" : nombre},
+            }                                       
+            shape.write(shp_propiedad)
+            shape.close()
     
     # ---------- Metodo para generar .kml -----------
     def crear_KML(self,ruta,tipo,nombre):
@@ -225,6 +263,7 @@ class generador():
         - el tipo 1 trabaja sobre la misma carpeta donde se guardan los .shp
         """
         
+
         if tipo==0:            
             shp=gpd.read_file(ruta+"/"+nombre+".shp")                   #abre el archivo .shp creado en la carpeta que se encuentra en la ruta (que es una carpeta momentanea)    
             ruta=ruta.split("/")                                        #la ruta la toma como lista según los niveles lvl1/lvl2/lvl3 -> [lvl1,lvl2,lvl3]

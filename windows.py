@@ -5,6 +5,7 @@ from PIL import Image
 from tkintermapview import TkinterMapView
 from pyproj import Transformer
 import numpy as np
+
 #--------------------------------------
 
 #-------------- Clase ventana_secundaria --------------
@@ -54,7 +55,7 @@ class ventana_secundaria(customtkinter.CTkToplevel):
         crea el icono en la ventana de aviso 
         recibe como parametro el nombre del icono a mostrar
         """
-        self.iconoerror=customtkinter.CTkImage(Image.open(os.path.join(ventana_secundaria.carpeta_img,name+".png")),size=(100,100))
+        self.iconoerror=customtkinter.CTkImage(Image.open(os.path.join(ventana_secundaria.carpeta_img,name+".png")),size=(90,90))
         self.iconoerror=customtkinter.CTkLabel(self, image = self.iconoerror,text="")
         self.iconoerror.grid(row=0,column=0,pady=(20,20),sticky="nsew")
             
@@ -143,26 +144,44 @@ class ventana_secundaria(customtkinter.CTkToplevel):
         self.boton_cerrar_amarillo(3)
     
     def mapa(self,data,sis_coor,geometria):
+        """
+        metodo usado por el metodo creado_correcto que permite generar un mapa y visualizar la geometría generada
+        cuenta con 4 parametros:
+            data        -> DataFrame con las coordenadas 
+            sis_coor    -> Sistema de coordenadas en el que se encuentras las coordendas del DataFrame
+            geometria   -> Tipo de geometria que quiere generar el usuario
+            opc         -> variable para indicar si es multipoligono o no (solo es tomado en cuenta cuando la geometria es 1, de resto no influye)
+        """
         zona_mapa=customtkinter.CTkFrame(self)
         zona_mapa.grid(row=3, column=0, pady=(20,0), padx=20, sticky="nsew")
-        mapa_satelite = TkinterMapView(zona_mapa, corner_radius=0,width=800, height=500)
+        mapa_satelite = TkinterMapView(zona_mapa, corner_radius=0,width=600, height=400)
         mapa_satelite.set_tile_server("https://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}&s=Ga", max_zoom=18)
-        #mapa_satelite.set_address("medellin")
         mapa_satelite.grid(row=2, rowspan=4, column=1, columnspan=3, sticky="nswe", padx=(0, 0), pady=(0, 0))
         lista=list(zip(data.x,data.y))
-        if sis_coor=="Origen nacional":
-            transformer = Transformer.from_crs('EPSG:9377','EPSG:4326',always_xy=True)
+        if sis_coor!="WGS84":
+            dic_coor={"Origen nacional":"EPSG:9377","Colombia Bogota zone":"EPSG:3116"}
+            transformer = Transformer.from_crs(dic_coor[sis_coor],'EPSG:4326',always_xy=True)
             lista = np.array(list(transformer.itransform(lista)))
             data['x']=lista[:,0]
             data['y']=lista[:,1]
         centro=lista[len(lista)//2]
+        print(data)
         if geometria==0:  #puntos
             for _, row in data.iterrows():
                 mapa_satelite.set_marker(row.y,row.x,text=row.id,text_color="white",marker_color_outside="#F2E205",marker_color_circle="#A69B03")
         elif geometria==1: #linea
             mapa_satelite.set_path(list(zip(data.y,data.x)),color="red",width=2)
-        elif geometria==2: #poligono
-            mapa_satelite.set_polygon(list(zip(data.y,data.x)),outline_color="red")
+        elif geometria==2 or geometria==3: #poligono
+            if geometria==3:
+                lista_id=list(set(data.id))
+                for i in lista_id:
+                    lista_coor=[]
+                    for _, row in data.iterrows():
+                        if row.id==i:
+                            lista_coor.append([row.y,row.x])
+                    mapa_satelite.set_polygon(lista_coor,outline_color="red",fill_color=None,border_width=3)
+            else:
+                mapa_satelite.set_polygon(list(zip(data.y,data.x)),outline_color="red",fill_color=None)
         else:              #punto + linea
             for _, row in data.iterrows():
                 mapa_satelite.set_marker(row.y,row.x,text=row.id,text_color="white",marker_color_outside="#F2E205",marker_color_circle="#A69B03")
